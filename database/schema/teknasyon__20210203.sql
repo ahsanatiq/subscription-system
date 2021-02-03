@@ -7,7 +7,7 @@
 #
 # Host: localhost (MySQL 5.7.29)
 # Database: teknasyon
-# Generation Time: 2021-02-03 08:43:46 +0000
+# Generation Time: 2021-02-03 10:41:01 +0000
 # ************************************************************
 
 
@@ -91,8 +91,8 @@ LOCK TABLES `operating_systems` WRITE;
 
 INSERT INTO `operating_systems` (`id`, `name`, `prod_endpoint`, `prod_username`, `prod_password`, `test_endpoint`, `test_username`, `test_password`, `created_at`, `updated_at`, `deleted_at`)
 VALUES
-	(1,'android','http://android.com/api/v1','admin','123','http://localhost:8080/platform/android','admin','123','2021-02-03 10:17:19','2021-02-03 10:17:19',NULL),
-	(2,'ios','http://apple.com/api/v1','admin','123','http://localhost:8080/platform/ios','admin','123','2021-02-03 10:17:20','2021-02-03 10:17:20',NULL);
+	(1,'android','http://android.com/api/v1','admin','123','http://ahsan-nginx/platform/android','admin','123','2021-02-03 10:17:19','2021-02-03 10:17:19',NULL),
+	(2,'ios','http://apple.com/api/v1','admin','123','http://ahsan-nginx/platform/ios','admin','123','2021-02-03 10:17:20','2021-02-03 10:17:20',NULL);
 
 /*!40000 ALTER TABLE `operating_systems` ENABLE KEYS */;
 UNLOCK TABLES;
