@@ -38,6 +38,7 @@ docker exec -it ahsan-phpfpm-api-2 composer install
 docker exec -it ahsan-phpfpm-api-3 composer install
 docker exec -it ahsan-mysql mysql -u root -pteknasyon -e "create database teknasyon_testing; GRANT ALL PRIVILEGES ON *.* TO 'teknasyon'@'%' IDENTIFIED BY 'teknasyon';";
 docker exec -it ahsan-phpfpm-api-1 php artisan migrate
+docker exec -it ahsan-phpfpm-api-1 php artisan db:seed
 ```
 
 Now, you can access the service endpoints at http://localhost:8080.
@@ -70,4 +71,30 @@ docker exec -it ahsan-phpfpm-api-1 vendor/bin/phpcs
 
 ### Note(s):
 
-- 
+- The application is based on [Laravel Lumen Framework](https://lumen.laravel.com/docs/6.x) (6.x LTS version). Used bcoz of its minimalistic nature, hence fast, and also full-filling the requirements to build the API.
+
+- The configurations are stored in the `/config/` directory, and `.env` files.
+
+- All the dependencies of the application are stored in `composer.json` file, which can be installed by `composer install` command.
+
+- Docker is being used to spin-up all the required services / containers. The specs are stored in the `docker-compose.yml`file, and extra docker related scripts are stored in `/docker-scripts/`directory.
+
+- The bash-script `setup.sh`file on the project root, contain all the necessary commands to provision & get up-and-running with setup. 
+
+- The database-schema is stored at `/database/schema/teknasyon__20210203.sql` 
+
+- The `/database/`directory also includes the migration & seeding scripts. 
+
+- The `/routes/api.php` constains all the endpoints. 
+
+- The `/src` directory contains all the application & domain-logic. It is divided into three layers `Application`, `Domain`, `Interfaces`. Hence, following the [Clean-Architecture](https://cdn-images-1.medium.com/max/1600/1*D1EvAeK74Gry46JMZM4oOQ.png)  
+  
+  - **Domain**: contains all the core-entities & value-objects.
+  
+  - **Application**: contains all the services/use-cases of our application.
+  
+  - **Interfaces:**  contains all the UI/Persentation code, that interacts with our application. 
+
+-  The `/tests` contains all the integration-tests, which include all the test-scenerios of our api's
+
+
