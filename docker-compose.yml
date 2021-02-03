@@ -1,0 +1,85 @@
+version: "3"
+services:
+
+    nginx:
+      build: docker-scripts/nginx
+      container_name: ahsan-nginx
+      volumes:
+        - ./:/var/www
+        - ./storage/docker-nginx-logs:/var/log/nginx
+        - ./docker-scripts/nginx/sites:/etc/nginx/sites-available
+      ports:
+        - "8080:80"
+      depends_on:
+        - phpfpm-api-1
+        - phpfpm-api-2
+        - phpfpm-api-3
+        - mysql
+        - redis
+        - beanstalkd
+
+    phpfpm-api-1:
+      build: docker-scripts/php-fpm
+      container_name: ahsan-phpfpm-api-1
+      volumes:
+        - ./:/var/www
+        - ./docker-scripts/php-fpm/php7.3.ini:/usr/local/etc/php/php.ini
+      ports:
+        - "8901:9000"
+
+    phpfpm-api-2:
+      build: docker-scripts/php-fpm
+      container_name: ahsan-phpfpm-api-2
+      volumes:
+        - ./:/var/www
+        - ./docker-scripts/php-fpm/php7.3.ini:/usr/local/etc/php/php.ini
+      ports:
+        - "8902:9000"
+
+    phpfpm-api-3:
+      build: docker-scripts/php-fpm
+      container_name: ahsan-phpfpm-api-3
+      volumes:
+        - ./:/var/www
+        - ./docker-scripts/php-fpm/php7.3.ini:/usr/local/etc/php/php.ini
+      ports:
+        - "8903:9000"
+
+    mysql:
+      build: docker-scripts/mysql
+      container_name: ahsan-mysql
+      volumes:
+        - ./storage/docker-mysql-data:/var/lib/mysql
+      environment:
+        - MYSQL_ROOT_PASSWORD=teknasyon
+        - MYSQL_DATABASE=teknasyon
+        - MYSQL_USER=teknasyon
+        - MYSQL_PASSWORD=teknasyon
+        - TZ=UTC
+      ports:
+        - "8306:3306"
+
+    redis:
+      build: docker-scripts/redis
+      container_name: ahsan-redis
+      volumes:
+        - ./storage/docker-redis-data:/data
+      ports:
+        - "8379:6379"
+
+    beanstalkd:
+      container_name: ahsan-beanstalkd
+      build: docker-scripts/beanstalkd
+      volumes:
+        - ./storage/docker-beanstalkd-data:/data
+      ports:
+        - "8300:11300"
+
+    beanstalkd-console:
+      build: docker-scripts/beanstalkd-console
+      ports:
+        - "8081:2080"
+      depends_on:
+        - beanstalkd
+
+
