@@ -12,8 +12,6 @@ printf "\n"
 echo "installing dependencies..."
 printf "\n"
 docker exec -it ahsan-phpfpm-api-1 composer install
-docker exec -it ahsan-phpfpm-api-2 composer install
-docker exec -it ahsan-phpfpm-api-3 composer install
 printf "\n"
 echo "creating test database..."
 printf "\n"

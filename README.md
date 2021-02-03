@@ -34,14 +34,22 @@ cd subscription-system
 cp .env.example .env
 docker-compose up -d
 docker exec -it ahsan-phpfpm-api-1 composer install
-docker exec -it ahsan-phpfpm-api-2 composer install
-docker exec -it ahsan-phpfpm-api-3 composer install
 docker exec -it ahsan-mysql mysql -u root -pteknasyon -e "create database teknasyon_testing; GRANT ALL PRIVILEGES ON *.* TO 'teknasyon'@'%' IDENTIFIED BY 'teknasyon';";
 docker exec -it ahsan-phpfpm-api-1 php artisan migrate
 docker exec -it ahsan-phpfpm-api-1 php artisan db:seed
 ```
 
-Now, you can access the service endpoints at http://localhost:8080.
+Now, you can access the service endpoints at http://localhost:8080/
+
+### API Endpoints
+
+| Method | Endpoint                    | Params                                                                       | Return                                   |
+| ------ | --------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------- |
+| `POST` | `/v1/device/register`       | `uID` ( string), `appID` (string), `language` (en/fr/ch), `os` (android/ios) | `token` (string)                         |
+| `POST` | `/v1/subscription/purchase` | `clientToken` (string), `receipt` (string)                                   | `success` (boolean)                      |
+| `POST` | `/v1/subscription/check`    | `clientToken` (string)                                                       | `status`(boolean)                        |
+| `POST` | `/platform/android`         | `receipt` (string)                                                           | `success` (boolean), `expiry` (datetime) |
+| `POST` | `/platform/ios`             | `receipt` (string)                                                           | `success` (boolean), `expiry` (datetime) |
 
 ### Run Tests
 
@@ -58,16 +66,6 @@ Coding-style standards are defined in the file `./phpcs.xml`. To Run it, use php
 ```bash
 docker exec -it ahsan-phpfpm-api-1 vendor/bin/phpcs
 ```
-
-### API Endpoints
-
-| Method | Endpoint                    | Params                                                                       | Return                                   |
-| ------ | --------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------- |
-| `POST` | `/v1/device/register`       | `uID` ( string), `appID` (string), `language` (en/fr/ch), `os` (android/ios) | `token` (string)                         |
-| `POST` | `/v1/subscription/purchase` | `clientToken` (string), `receipt` (string)                                   | `success` (boolean)                      |
-| `POST` | `/v1/subscription/check`    | `clientToken` (string)                                                       | `status`(boolean)                        |
-| `POST` | `/platform/android`         | `receipt` (string)                                                           | `success` (boolean), `expiry` (datetime) |
-| `POST` | `/platform/ios`             | `receipt` (string)                                                           | `success` (boolean), `expiry` (datetime) |
 
 ### Note(s):
 
@@ -96,5 +94,9 @@ docker exec -it ahsan-phpfpm-api-1 vendor/bin/phpcs
   - **Interfaces:**  contains all the UI/Persentation code, that interacts with our application. 
 
 -  The `/tests` contains all the integration-tests, which include all the test-scenerios of our api's
+
+- `Nginx` Container is used to Load-Balance the traffic between PHP-FPM containers for API requests. 
+
+- [Sentry.io](https://sentry.io/) is used for centralize logging from the PHP-FPM containers. 
 
 
