@@ -26,6 +26,9 @@ services:
         - ./docker-scripts/php-fpm/php7.3.ini:/usr/local/etc/php/php.ini
       ports:
         - "8901:9000"
+      links:
+        - mysql
+        - redis
       depends_on:
         - mysql
         - redis
@@ -38,6 +41,9 @@ services:
         - ./docker-scripts/php-fpm/php7.3.ini:/usr/local/etc/php/php.ini
       ports:
         - "8902:9000"
+      links:
+        - mysql
+        - redis
       depends_on:
         - mysql
         - redis
@@ -50,6 +56,9 @@ services:
         - ./docker-scripts/php-fpm/php7.3.ini:/usr/local/etc/php/php.ini
       ports:
         - "8903:9000"
+      links:
+        - mysql
+        - redis
       depends_on:
         - mysql
         - redis
