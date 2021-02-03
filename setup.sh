@@ -11,15 +11,18 @@ docker-compose up -d
 printf "\n"
 echo "installing dependencies..."
 printf "\n"
-docker exec -it ahsan-trivago-php composer install
+docker exec -it ahsan-phpfpm-api-1 composer install
+docker exec -it ahsan-phpfpm-api-2 composer install
+docker exec -it ahsan-phpfpm-api-3 composer install
 printf "\n"
 echo "creating test database..."
 printf "\n"
-docker exec -it ahsan-trivago-mysql mysql -u root -ptrivago -e "create database trivago_testing; GRANT ALL PRIVILEGES ON *.* TO 'trivago'@'%' IDENTIFIED BY 'trivago';";
+docker exec -it ahsan-mysql mysql -u root -pteknasyon -e "create database teknasyon_testing; GRANT ALL PRIVILEGES ON *.* TO 'teknasyon'@'%' IDENTIFIED BY 'teknasyon';"
 printf "\n"
 echo "migrating the required schema in database..."
 printf "\n"
-docker exec -it ahsan-trivago-php php artisan doctrine:migrations:migrate
+docker exec -it ahsan-phpfpm-api-1 php artisan migrate
+docker exec -it ahsan-phpfpm-api-1 php artisan db:seed
 printf "\n"
 echo "done..."
 printf "\n"
